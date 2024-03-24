@@ -13,6 +13,8 @@ const difficulty = require("./src/topics/difficulty");
 const template = require("./src/topics/template");
 const blocks = require("./src/topics/blocks");
 const fee = require("./src/topics/fee");
+const halving = require("./src/topics/halving");
+const price = require("./src/topics/price");
 
 //Handle start command
 const startCommand = require("./src/commands/start");
@@ -22,13 +24,13 @@ startCommand(bot);
 const tipCommand = require("./src/commands/tip");
 tipCommand(bot);
 
+//Handle the help command
+const helpCommand = require("./src/commands/help");
+helpCommand(bot);
+
 //Handle tip action command
 const tip = require("./src/actions/tip");
 tip(bot);
-
-//Handle the help command
-const help = require("./src/commands/help");
-help(bot);
 
 //Blocktime hear command
 const blocktime = require("./src/hears/blocktime");
@@ -68,6 +70,27 @@ bot.action("done", async (ctx) => {
 // //Explorer Handler with StartTemplate
 bot.action("explorer", async (ctx) => {
   await template.sendStartTemplate(ctx, bot);
+  await ctx.answerCbQuery();
+  await ctx.deleteMessage();
+});
+
+//Handle the Halving callback from total overview
+bot.action("halving", async (ctx) => {
+  await halving.sendHalving(ctx, bot);
+  await ctx.answerCbQuery();
+  await ctx.deleteMessage();
+});
+
+//Handle the price callback_data from total overview
+bot.action("price", async (ctx) => {
+  await template.sendPriceTemplate(ctx, bot);
+  await ctx.answerCbQuery();
+  await ctx.deleteMessage();
+});
+
+//Handle the latestPrice callback_data from price template overview
+bot.action("latestPrice", async (ctx) => {
+  await price.sendPrice(ctx, bot);
   await ctx.answerCbQuery();
   await ctx.deleteMessage();
 });
@@ -577,24 +600,45 @@ bot.inlineQuery(/^[0-9]{18}$/gm, async (ctx) => {
 //Return the halving countdown to a chat
 bot.inlineQuery("halving", async (ctx) => {
   try {
-    //let message = ctx.inlineQuery.query
     let res = await axios.get("https://mempool.space/api/blocks/tip/height");
     let data = res.data;
+    console.log(data);
+
     if (data <= 840000) {
       let period = data - 630000;
       let halving = 840000 - data;
+
+      let halvingHours = (halving * 10) / 60;
       let halvingTime = (halving * 10) / 60 / 24;
+
+      // Stunden extrahieren als Ganzzahl
+      let halvingHour = Math.floor(halvingHours);
+      // Minuten extrahieren als Dezimalteil * 60
+      let halvingMinutes = Math.round((halvingHours - halvingHour) * 60);
+
       let halvingDays = Math.round(halvingTime);
+
+      //Umrechung als Prozentangabe
       let progress = (period * 100) / 210000;
-      console.log(progress);
-      let percent = Math.round(progress * 100) / 100;
+      let percent = Math.round(progress * 1000) / 1000;
+      //Aktuelle Datum und Uhrzeit
+      let now = new Date();
+      console.log(halvingMinutes);
+      //Zielddatum und Uhrzeit berechnen
+      let target = new Date(now.getTime());
+      target.setHours(now.getHours() + halvingHour);
+      target.setMinutes(now.getMinutes() + halvingMinutes);
+
+      //Zieldatum und Uhrzeit als String formatieren
+      let targetDate = target.toLocaleString();
+
       let results = [
         {
           type: "article",
           id: "halving",
           title: "⏰ Send Halving Information to a chat.",
           input_message_content: {
-            message_text: `⏰ Bitcoin Halving Countdown:\n🗓 ${halvingDays} days left\n📦 Blocks remaining: ${halving}\n🏁 Progress: ${percent} %`,
+            message_text: `🚀 Bitcoin Halving Countdown:\n\n📦 Blocks remaining: ${halving}\n🏁 Progress: ${percent} %\n🗓 ${halvingDays} days left, or\n⏱ ${halvingHour} hours & ${halvingMinutes} minutes left \n🎯 Expected halving date: ${targetDate}`,
           },
           description: "Usage:\n@bitcoin_mempool_bot halving",
           thumb_url: "https://i.ibb.co/rQ8Fhj1/bitcoin-mempool-bot-white.png",
@@ -603,6 +647,9 @@ bot.inlineQuery("halving", async (ctx) => {
         },
       ];
       await bot.telegram.answerInlineQuery(ctx.inlineQuery.id, results);
+    } else {
+      let notice = `The 2024 halving event is over`;
+      await bot.telegram.answerInlineQuery(ctx.inlineQuery.id, notice);
     }
   } catch (error) {
     console.log(error);
