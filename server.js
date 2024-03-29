@@ -1,7 +1,6 @@
 console.log("The Bot is running");
 require("dotenv").config();
 const { Telegraf } = require("telegraf");
-const { message } = require("telegraf/filters");
 const express = require("express");
 const axios = require("axios");
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -133,12 +132,14 @@ bot.action("blockHeight", async (ctx) => {
   await ctx.answerCbQuery();
   await ctx.deleteMessage();
 });
+
 //Handle latest Blocks callback from block overview
 bot.action("latestBlocks", async (ctx) => {
   await blocks.showLatestBlocks(ctx, bot);
   await ctx.answerCbQuery();
   await ctx.deleteMessage();
 });
+
 //Handle the getBlockInfo callback from block overview
 bot.action("getBlockInfo", async (ctx) => {
   await bot.telegram.sendMessage(
@@ -185,6 +186,7 @@ bot.action("recFee", async (ctx) => {
   await ctx.answerCbQuery();
   await ctx.deleteMessage();
 });
+
 //Handle the adresses callback from total overview
 bot.action("adresses", async (ctx) => {
   await bot.telegram.sendMessage(
@@ -371,7 +373,7 @@ bot.action("channelDetail", async (ctx) => {
   await ctx.deleteMessage();
 });
 
-//Inline Queries
+/* ----------------------------------------------------------------------------------------- Inline Queries ----------------------------------------------------------------------------------- */
 
 //Return the blocktime to a chat
 bot.inlineQuery("blocktime", async (ctx) => {
@@ -433,6 +435,7 @@ bot.inlineQuery("difficulty", async (ctx) => {
     await ctx.answerInlineQuery("Something went wrong 🚧");
   }
 });
+
 //return the backlog to a chat
 bot.inlineQuery("backlog", async (ctx) => {
   try {
@@ -464,6 +467,7 @@ bot.inlineQuery("backlog", async (ctx) => {
     await ctx.answerInlineQuery("Something went wrong 🚧");
   }
 });
+
 //Return the recommended fee to a chat
 bot.inlineQuery("fee", async (ctx) => {
   try {
@@ -492,6 +496,7 @@ bot.inlineQuery("fee", async (ctx) => {
     await ctx.answerInlineQuery("Something went wrong 🚧");
   }
 });
+
 //Return lightning node details to a chat
 bot.inlineQuery(/^[A-Fa-f0-9]{66}$/gm, async (ctx) => {
   try {
@@ -541,7 +546,8 @@ bot.inlineQuery(/^[A-Fa-f0-9]{66}$/gm, async (ctx) => {
     await ctx.answerInlineQuery("Something went wrong 🚧");
   }
 });
-////Return infos about a Lightning Channel with the given :channelID to a chat
+
+//Return infos about a Lightning Channel with the given :channelID to a chat
 bot.inlineQuery(/^[0-9]{18}$/gm, async (ctx) => {
   try {
     let channelId = ctx.inlineQuery.query;
@@ -597,6 +603,7 @@ bot.inlineQuery(/^[0-9]{18}$/gm, async (ctx) => {
     await ctx.answerInlineQuery("Something went wrong 🚧");
   }
 });
+
 //Return the halving countdown to a chat
 bot.inlineQuery("halving", async (ctx) => {
   try {

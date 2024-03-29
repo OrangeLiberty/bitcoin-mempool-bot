@@ -48,6 +48,7 @@ async function sendStartTemplate(ctx, bot) {
     }
   );
 }
+
 //Price InlineButton Template
 async function sendPriceTemplate(ctx, bot) {
   try {
@@ -70,6 +71,7 @@ async function sendPriceTemplate(ctx, bot) {
     await ctx.reply("Something went wrong 🚧");
   }
 }
+
 //Mempool Template
 async function sendMemTemplate(ctx, bot) {
   try {
@@ -97,6 +99,7 @@ async function sendMemTemplate(ctx, bot) {
     await ctx.reply("Something went wrong 🚧");
   }
 }
+
 //Block Template
 async function sendBlockTemplate(ctx, bot) {
   try {
@@ -141,6 +144,7 @@ async function sendBlockTemplate(ctx, bot) {
     await ctx.reply("Something went wrong 🚧");
   }
 }
+
 //Mining Template
 async function sendMiningTemplate(ctx, bot) {
   try {
@@ -185,6 +189,7 @@ async function sendMiningTemplate(ctx, bot) {
     await ctx.reply("Something went wrong 🚧");
   }
 }
+
 //Pool Detail Template
 async function sendPoolTemplate(ctx, bot) {
   try {
