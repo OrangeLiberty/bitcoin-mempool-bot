@@ -8,10 +8,10 @@ async function sendStartTemplate(ctx, bot) {
         inline_keyboard: [
           [{ text: "🎊 Halving 2024", callback_data: "halving" }],
           [{ text: "🔮 Mempool Details", callback_data: "mempool" }],
-          [{ text: "🏆 Price Details", callback_data: "price" }],
+          [{ text: "📊 Market Data", callback_data: "marketData" }],
           [
             {
-              text: "⚙️ Difficulty Details",
+              text: "⚙️ Difficulty Adjustment",
               callback_data: "difficultyAdjustment",
             },
           ],
@@ -52,10 +52,18 @@ async function sendStartTemplate(ctx, bot) {
 //Price InlineButton Template
 async function sendPriceTemplate(ctx, bot) {
   try {
-    await bot.telegram.sendMessage(ctx.chat.id, "Select price information 👇", {
+    await bot.telegram.sendMessage(ctx.chat.id, "Select Market Data 👇", {
       reply_markup: {
         inline_keyboard: [
-          [{ text: "💸 Latest Bitcoin prices", callback_data: "latestPrice" }],
+          [
+            {
+              text: "💸 Latest Bitcoin Prices",
+              callback_data: "latestPrice",
+            },
+          ],
+          [{ text: "💲 Moscow Time", callback_data: "moscowTime" }],
+          [{ text: "📈 Market Cap", callback_data: "marketCap" }],
+          [{ text: "🔄 Circulating Supply", callback_data: "supply" }],
 
           [
             {
@@ -120,13 +128,13 @@ async function sendBlockTemplate(ctx, bot) {
           ],
           [
             {
-              text: "🧮 Get Hash from specific Blocktime\n(Blocktime required)",
+              text: "🧮 Get List of Transactions",
               callback_data: "blockHash",
             },
           ],
           [
             {
-              text: "🪧 Specific Block Informations\n(Hash value required)",
+              text: "🪧 Specific Block Informations",
               callback_data: "getBlockInfo",
             },
           ],

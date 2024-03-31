@@ -81,7 +81,7 @@ bot.action("halving", async (ctx) => {
 });
 
 //Handle the price callback_data from total overview
-bot.action("price", async (ctx) => {
+bot.action("marketData", async (ctx) => {
   await template.sendPriceTemplate(ctx, bot);
   await ctx.answerCbQuery();
   await ctx.deleteMessage();
@@ -93,7 +93,24 @@ bot.action("latestPrice", async (ctx) => {
   await ctx.answerCbQuery();
   await ctx.deleteMessage();
 });
-
+//Handle the moscow time callback_data from price template overview
+bot.action("moscowTime", async (ctx) => {
+  await price.sendMoscowTime(ctx, bot);
+  await ctx.answerCbQuery();
+  await ctx.deleteMessage();
+});
+//Handle the market cap callback_data from price template overview
+bot.action("marketCap", async (ctx) => {
+  await price.sendMarketCap(ctx, bot);
+  await ctx.answerCbQuery();
+  await ctx.deleteMessage();
+});
+//Handle the Circulating supply callback_data from price template overview
+bot.action("supply", async (ctx) => {
+  await price.sendSupply(ctx, bot);
+  await ctx.answerCbQuery();
+  await ctx.deleteMessage();
+});
 //Handle the mempool callback from total overview
 bot.action("mempool", async (ctx) => {
   await template.sendMemTemplate(ctx, bot);
@@ -673,7 +690,7 @@ if (process.env.NODE_ENV === "production") {
   app.post("/", (req, res) => {
     bot.handleUpdate(req.body, res.body);
     console.log(req.body);
-    console.log(res);
+    console.log(res.body);
     req.end();
   });
 
