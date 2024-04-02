@@ -20,7 +20,7 @@ module.exports = (bot) => {
         }
 
         message += `
-🍰 UTXO: ${i + 1}
+🍕 UTXO: ${i + 1}
 🪪 Transaction-Id: ${item.txid}
 📍 Position: ${item.vout}
 ✅ Confirmed: ${item.status.confirmed} @⏳ Blocktime ${item.status.block_height}
@@ -69,7 +69,7 @@ module.exports = (bot) => {
         }
 
         message += `
-🍰 UTXO: ${i + 1}
+🍕 UTXO: ${i + 1}
 🪪 Transaction-Id: ${item.txid}
 📍 Position: ${item.vout}
 ✅ Confirmed: ${item.status.confirmed} @⏳ Blocktime ${item.status.block_height}
@@ -116,7 +116,7 @@ module.exports = (bot) => {
           break; // Beendet die Schleife, sobald die maximale Anzahl an Iterationen erreicht ist
         }
         message += `
-🍰 UTXO: ${i + 1}
+🍕 UTXO: ${i + 1}
 🪪 Transaction-Id: ${item.txid}
 📍 Position: ${item.vout}
 ✅ Confirmed: ${item.status.confirmed} @⏳ Blocktime ${item.status.block_height}
@@ -127,7 +127,7 @@ module.exports = (bot) => {
       }
       await bot.telegram.sendMessage(
         ctx.chat.id,
-        "Unspent Transaction Output: " + message,
+        "Unspent Transaction Output:\n" + message,
         {
           reply_markup: {
             inline_keyboard: [

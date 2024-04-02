@@ -11,8 +11,7 @@ async function showDifficulty(ctx, bot) {
     let data = res.data;
     let time = data.remainingTime / 1000 / 60 / 60 / 24;
     let timeAvg = data.adjustedTimeAvg / 1000 / 60;
-    let now = new Date();
-    let target = new Date(now.getTime() + time);
+    let target = new Date(Date.now() + data.remainingTime);
 
     let message = `
 Difficulty Adjustment:\n
@@ -20,7 +19,7 @@ Difficulty Adjustment:\n
 〽️ Average time next block: ${Math.round(timeAvg * 100) / 100} min\n
 🏗 Next Retarget Height: ${data.nextRetargetHeight}\n
 📦 Remaining Blocks: ${data.remainingBlocks} (~${Math.floor(time)} days)\n
-⏱ Estimated Time: ${target.toLocaleString()}\n 
+⏱ Estimated Time: ${target}\n 
 🗒 Estimated Adjustment: ${Math.round(data.difficultyChange * 100) / 100} %\n
 🎯 Expected Blocks: ${Math.floor(data.expectedBlocks)}\n
 🏁 Previous Retarget: ${Math.round(data.previousRetarget * 100) / 100} %\n`;
