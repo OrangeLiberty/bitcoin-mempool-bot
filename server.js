@@ -27,6 +27,14 @@ tipCommand(bot);
 const helpCommand = require("./src/commands/help");
 helpCommand(bot);
 
+//Handle the Adress history command
+const historyCommand = require("./src/commands/history");
+historyCommand(bot);
+
+//Handle the Adress history command
+const nodeChannel = require("./src/commands/channels");
+nodeChannel(bot);
+
 //Handle tip action command
 const tip = require("./src/actions/tip");
 tip(bot);
@@ -203,9 +211,14 @@ bot.action("recFee", async (ctx) => {
   await ctx.answerCbQuery();
   await ctx.deleteMessage();
 });
-
+//Handle the
+bot.action("addressDetail", async (ctx) => {
+  await template.sendAddressTemplate(ctx, bot);
+  await ctx.answerCbQuery();
+  await ctx.deleteMessage();
+});
 //Handle the adresses callback from total overview
-bot.action("adresses", async (ctx) => {
+bot.action("utxo", async (ctx) => {
   await bot.telegram.sendMessage(
     ctx.chat.id,
     "Please enter a valid Bitcoin Adress...👇",
@@ -213,6 +226,11 @@ bot.action("adresses", async (ctx) => {
       reply_markup: {
         inline_keyboard: [
           [
+            {
+              text: "🔙 Back to Address Overview",
+              callback_data: "addressDetail",
+            },
+
             {
               text: "✅ Done",
               callback_data: "done",
@@ -225,7 +243,32 @@ bot.action("adresses", async (ctx) => {
   await ctx.answerCbQuery();
   await ctx.deleteMessage();
 });
+//Handle the adress history callback from adress overview
+bot.action("history", async (ctx) => {
+  await bot.telegram.sendMessage(
+    ctx.chat.id,
+    "Please enter command /history <adress> 👇",
+    {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            {
+              text: "🔙 Back to Address Overview",
+              callback_data: "addressDetail",
+            },
 
+            {
+              text: "✅ Done",
+              callback_data: "done",
+            },
+          ],
+        ],
+      },
+    }
+  );
+  await ctx.answerCbQuery();
+  await ctx.deleteMessage();
+});
 //Handle the transaction callback from total overview
 bot.action("transaction", async (ctx) => {
   await bot.telegram.sendMessage(
@@ -356,6 +399,10 @@ bot.action("nodeDetail", async (ctx) => {
         inline_keyboard: [
           [
             {
+              text: "🔙 Back to Lightning Overview",
+              callback_data: "lightning",
+            },
+            {
               text: "✅ Done",
               callback_data: "done",
             },
@@ -367,7 +414,32 @@ bot.action("nodeDetail", async (ctx) => {
   await ctx.answerCbQuery();
   await ctx.deleteMessage();
 });
+//Handle the nodeChannel Callback from Lightning Overview
+bot.action("nodeChannel", async (ctx) => {
+  await bot.telegram.sendMessage(
+    ctx.chat.id,
+    "Please enter command /channel <Node Public Key> 👇",
+    {
+      reply_markup: {
+        inline_keyboard: [
+          [
+            {
+              text: "🔙 Back to Lightning Overview",
+              callback_data: "lightning",
+            },
 
+            {
+              text: "✅ Done",
+              callback_data: "done",
+            },
+          ],
+        ],
+      },
+    }
+  );
+  await ctx.answerCbQuery();
+  await ctx.deleteMessage();
+});
 //Handle the channelDetail callback from Lightning Overview
 bot.action("channelDetail", async (ctx) => {
   await bot.telegram.sendMessage(
@@ -377,6 +449,10 @@ bot.action("channelDetail", async (ctx) => {
       reply_markup: {
         inline_keyboard: [
           [
+            {
+              text: "🔙 Back to Lightning Overview",
+              callback_data: "lightning",
+            },
             {
               text: "✅ Done",
               callback_data: "done",

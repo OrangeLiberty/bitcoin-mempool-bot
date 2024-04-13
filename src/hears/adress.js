@@ -2,7 +2,7 @@ const axios = require("axios");
 
 module.exports = (bot) => {
   //Takes an adress and returns UTXOS # BC1Q
-  bot.hears(/^bc1q[0-9a-zA-Z]{38}$/gm, async (ctx) => {
+  bot.hears(/^[bB][cC]1[qQ][0-9a-zA-Z]{38}$/gm, async (ctx) => {
     try {
       let adressMessage = ctx.match[0];
       //API
@@ -38,7 +38,11 @@ module.exports = (bot) => {
             inline_keyboard: [
               [
                 {
-                  text: "🔙 Back to Total Overview",
+                  text: "🔙 Back to Address Overview",
+                  callback_data: "addressDetail",
+                },
+                {
+                  text: "🔝 Back to Top",
                   callback_data: "explorer",
                 },
               ],
@@ -48,7 +52,7 @@ module.exports = (bot) => {
       );
     } catch (error) {
       console.log(error);
-      await ctx.reply("Too many outputs!\n\nMaybe time to consolidate?");
+      await ctx.reply("Something went wrong");
     }
   });
   //Takes an adress and returns UTXOS # OLD 1/3
@@ -86,7 +90,11 @@ module.exports = (bot) => {
             inline_keyboard: [
               [
                 {
-                  text: "🔙 Back to Total Overview",
+                  text: "🔙 Back to Address Overview",
+                  callback_data: "addressDetail",
+                },
+                {
+                  text: "🔝 Back to Top",
                   callback_data: "explorer",
                 },
               ],
@@ -96,11 +104,11 @@ module.exports = (bot) => {
       );
     } catch (error) {
       console.log(error);
-      await ctx.reply("Too many outputs!\n\nMaybe time to consolidate?");
+      await ctx.reply("Something went wrong");
     }
   });
   //Takes an adress and returns UTXOS # BC1P
-  bot.hears(/^bc1p[0-9a-zA-Z]{58}$/gm, async (ctx) => {
+  bot.hears(/^[bB][cC]1[pP][0-9a-zA-Z]{58}$/gm, async (ctx) => {
     try {
       let adressMessage = ctx.match[0];
       //API
@@ -133,7 +141,11 @@ module.exports = (bot) => {
             inline_keyboard: [
               [
                 {
-                  text: "🔙 Back to Total Overview",
+                  text: "🔙 Back to Address Overview",
+                  callback_data: "addressDetail",
+                },
+                {
+                  text: "🔝 Back to Top",
                   callback_data: "explorer",
                 },
               ],
@@ -143,7 +155,7 @@ module.exports = (bot) => {
       );
     } catch (error) {
       console.log(error);
-      await ctx.reply("Too many outputs!\n\nMaybe time to consolidate?");
+      await ctx.reply("Something went wrong");
     }
   });
   //

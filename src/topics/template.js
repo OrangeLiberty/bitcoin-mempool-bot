@@ -20,8 +20,8 @@ async function sendStartTemplate(ctx, bot) {
           [{ text: "💰 Fees", callback_data: "recFee" }],
           [
             {
-              text: "👀 Adress UTXOs",
-              callback_data: "adresses",
+              text: "👀 Address Details",
+              callback_data: "addressDetail",
             },
           ],
           [
@@ -48,29 +48,38 @@ async function sendStartTemplate(ctx, bot) {
     }
   );
 }
-
+//Adress InlineButton Template
+async function sendAddressTemplate(ctx, bot) {
+  try {
+    await bot.telegram.sendMessage(
+      ctx.chat.id,
+      "Select Address Information 👇",
+      {
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: "🍕 UTXO Set", callback_data: "utxo" }],
+            [{ text: "📖 Address History", callback_data: "history" }],
+            [{ text: "🔙 Back to Total Overview", callback_data: "explorer" }],
+          ],
+        },
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    await ctx.reply("Something went wrong 🚧");
+  }
+}
 //Price InlineButton Template
 async function sendPriceTemplate(ctx, bot) {
   try {
     await bot.telegram.sendMessage(ctx.chat.id, "Select Market Data 👇", {
       reply_markup: {
         inline_keyboard: [
-          [
-            {
-              text: "💸 Latest Bitcoin Prices",
-              callback_data: "latestPrice",
-            },
-          ],
+          [{ text: "💸 Latest Bitcoin Prices", callback_data: "latestPrice" }],
           [{ text: "💲 Moscow Time", callback_data: "moscowTime" }],
           [{ text: "📈 Market Cap", callback_data: "marketCap" }],
           [{ text: "🔄 Circulating Supply", callback_data: "supply" }],
-
-          [
-            {
-              text: "🔙 Back to Total Overview",
-              callback_data: "explorer",
-            },
-          ],
+          [{ text: "🔙 Back to Total Overview", callback_data: "explorer" }],
         ],
       },
     });
@@ -279,6 +288,12 @@ async function sendLightningTemplate(ctx, bot) {
             ],
             [
               {
+                text: "🚰 Node Channels (Node Pubkey required)",
+                callback_data: "nodeChannel",
+              },
+            ],
+            [
+              {
                 text: "👁 Channel Details (Channel ID required)",
                 callback_data: "channelDetail",
               },
@@ -306,4 +321,5 @@ module.exports = {
   sendLightningTemplate,
   sendPoolTemplate,
   sendPriceTemplate,
+  sendAddressTemplate,
 };
