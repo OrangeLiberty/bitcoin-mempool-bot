@@ -758,7 +758,7 @@ bot.inlineQuery("halving", async (ctx) => {
 });
 
 // Start the server
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "Production") {
   //Webhooks for the production server
   //app.use(express.json());
   app.use(bot.webhookCallback("/"));
